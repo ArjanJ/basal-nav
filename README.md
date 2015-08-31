@@ -1,5 +1,8 @@
-# basal-nav
+# basal-nav.js
 Front-end navigation component.
 
-# demo
+# Demo
 <a href="http://arjanj.github.io/basal-nav/demo/">View demo here.</a>
+
+# Get Started
+TODO
