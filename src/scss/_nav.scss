@@ -1,0 +1,73 @@
+/*------------------------------------*\
+    #COMPONENTS - NAV
+\*------------------------------------*/
+
+.c-nav {
+	display: none;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	height: 100%;
+	width: 100%;
+	background: $black;
+	will-change: transform;
+	transform: translate(100%, 0);
+	@include ease('in-out', 0.25);
+
+	&--active {
+		transform: translate(0, 0);
+		@include ease('in-out', 0.25);
+	}
+
+	&__list {
+		list-style-type: none;
+		margin-top: $spacing * 3;
+	}
+
+	&__item {
+		
+	}
+
+	&__link {
+		display: block;
+		padding: ($spacing / 1.5) ($spacing);
+		color: $white;
+		font-size: 1.8rem;
+
+		&:hover {
+			background: mix(white, $black, 10);
+		}
+	}
+
+	@include bp-small {
+		width: 300px;
+	}
+
+	@include bp-medium {
+		display: block !important;
+		transform: none;
+		position: static;
+		height: auto;
+		width: auto;
+		background: none;
+
+		&__list {
+			display: flex;
+			margin: 0;
+		}
+
+		&__item {
+			margin: 0 0 0 $spacing;
+		}
+
+		&__link {
+			font-size: 1.6rem;
+			padding: 0;
+
+			&:hover {
+				background: none;
+				color: mix(black, $white, 10);
+			}
+		}
+	}
+}
