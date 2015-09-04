@@ -1,12 +1,12 @@
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['buoy/dist/js/buoy'], factory());
+    define(factory);
   } else if (typeof exports === 'object') {
-    module.exports = factory(require('buoy/dist/js/buoy'));
+    module.exports = factory();
   } else {
-    root.Nav = factory(root.buoy);
+    root.BasalNav = factory();
   }
-})(this, function(buoy) {
+})(this, function() {
 
   'use strict';
 
@@ -14,14 +14,46 @@
   // Variables
   //
 
-  var Nav = {}; // Object for public APIs
-  var supports = !!document.querySelector && !!window.addEventListener; // Feature test
+  var BasalNav = {}; // Object for public APIs
   var settings; // Placeholder variables
+
+  // Merge two objects
+  var extend = function (defaults, options) {
+    var extended = {};
+    var prop;
+    for (prop in defaults) {
+      if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
+          extended[prop] = defaults[prop];
+      }
+    }
+    for (prop in options) {
+      if (Object.prototype.hasOwnProperty.call(options, prop)) {
+          extended[prop] = options[prop];
+      }
+    }
+    return extended;
+  };
+
+  // Check for transitionend event
+  var transitions = {
+      'transition': 'transitionend',
+      'WebkitTransition': 'webkitTransitionEnd',
+      'MozTransition': 'transitionend',
+      'OTransition': 'otransitionend'
+    },
+    elem = document.createElement('div');
+
+  for (var t in transitions) {
+    if (typeof elem.style[t] !== 'undefined') {
+      window.transitionEnd = transitions[t];
+      break;
+    }
+  }
 
   // Default settings
   var defaults = {
-    TOGGLE_ELEMENT: 'c-hamburger',
-    TOGGLE_ACTIVE_CLASS: 'c-hamburger--close'
+    TOGGLE_ELEMENT: 'basal-nav__hamburger',
+    TOGGLE_ELEMENT_ACTIVE_CLASS: 'basal-nav__hamburger--close'
   };
 
   // Elements
@@ -35,6 +67,31 @@
   // Methods
   //
 
+  var showNav = function() {
+
+    // first make the nav visible
+    nav.style.display = 'block';
+
+    // then animate it by adding the active class
+    window.setTimeout(function() {
+      nav.classList.add(toggleTargetClass);
+      toggle.classList.add(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
+    }, 20);
+  };
+
+  var hideNav = function() {
+
+    nav.classList.remove(toggleTargetClass);
+    toggle.classList.remove(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
+
+    function displayNone() {
+      nav.style.display = 'none';
+      nav.removeEventListener(transitionEnd, displayNone, false);
+    }
+
+    nav.addEventListener(transitionEnd, displayNone, false);
+  }
+
   /**
    * Toggle the Nav
    * @private
@@ -47,39 +104,19 @@
       // if the nav doesn't contain the active class then add it
       if (!nav.classList.contains(toggleTargetClass)) {
 
-        // first make the nav visible
-        nav.style.display = 'block';
-
-        // then animate it by adding the active class
-        window.setTimeout(function() {
-          nav.classList.add(toggleTargetClass);
-          toggle.classList.add(settings.TOGGLE_ACTIVE_CLASS);
-        }, 10);
-
-        return;
+        showNav();
 
         // if the nav contains the active class then remove it
       } else if (nav.classList.contains(toggleTargetClass)) {
 
-        nav.classList.remove(toggleTargetClass);
-        toggle.classList.remove(settings.TOGGLE_ACTIVE_CLASS);
+        hideNav();
 
-        window.setTimeout(function() {
-          nav.style.display = 'none';
-        }, 400);
-
-        return;
       }
 
       // if the clicked element isn't the hamburger && the nav has the active class, then remove it
-    } else if (nav.classList.contains(toggleTargetClass) && toggle.classList.contains(settings.TOGGLE_ACTIVE_CLASS)) {
+    } else if (nav.classList.contains(toggleTargetClass) && toggle.classList.contains(settings.TOGGLE_ELEMENT_ACTIVE_CLASS)) {
 
-      nav.classList.remove(toggleTargetClass);
-      toggle.classList.remove(settings.TOGGLE_ACTIVE_CLASS);
-
-      window.setTimeout(function() {
-        nav.style.display = 'none';
-      }, 400);
+      hideNav();
     }
 
   };
@@ -100,7 +137,7 @@
    * Destroy the current initialization.
    * @public
    */
-  Nav.destroy = function() {
+  BasalNav.destroy = function() {
 
     // If plugin isn't already initialized, stop
     if (!settings) return;
@@ -118,16 +155,13 @@
    * @public
    * @param {Object} options User settings
    */
-  Nav.init = function(options) {
-
-    // feature test
-    if (!supports) return;
+  BasalNav.init = function(options) {
 
     // Destroy any existing initializations
-    Nav.destroy();
+    BasalNav.destroy();
 
     // Merge user options with defaults
-    settings = buoy.extend(defaults, options || {});
+    settings = extend(defaults, options || {});
 
     // Listen for click events
     document.addEventListener('click', eventHandler, false);
@@ -139,6 +173,6 @@
   // Public APIs
   //
 
-  return Nav;
+  return BasalNav;
 
 });

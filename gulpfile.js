@@ -1,8 +1,5 @@
 var gulp            = require('gulp');
 var sass            = require('gulp-sass');
-var browserify      = require('browserify');
-var source          = require('vinyl-source-stream');
-var buffer          = require('vinyl-buffer');
 var uglify          = require('gulp-uglify');
 var rename 					= require('gulp-rename');
 var autoprefixer    = require('autoprefixer');
@@ -13,7 +10,11 @@ var paths = {
 	src: {
 		basalNav: './src/js/basalNav.js',
 		js: './src/js',
-		scss: './src/scss/*.scss'
+		scss: {
+			all: './src/scss/**/*.scss',
+			demo: './src/scss/demo/*.scss',
+			basalNav: './src/scss/basalNav/*.scss'
+		}
 	},
 
 	dist: {
@@ -22,8 +23,8 @@ var paths = {
 	}
 };
 
-gulp.task('scss', function() {
-	return gulp.src(paths.src.scss)
+function scssDemo() {
+	return gulp.src(paths.src.scss.demo)
 		.pipe(sass())
 		.on('error', function(err) {
       console.log(err);
@@ -33,33 +34,53 @@ gulp.task('scss', function() {
 		  autoprefixer()
 		]))
 		.pipe(minifyCSS())
+		.pipe(rename('demo.css'))
 		.pipe(gulp.dest(paths.dist.css));
-});
+}
 
-gulp.task('minify', function() {
+function scssBasalNav() {
+	return gulp.src(paths.src.scss.basalNav)
+		.pipe(sass())
+		.on('error', function(err) {
+      console.log(err);
+      this.emit('end');
+    })
+		.pipe(postcss([
+		  autoprefixer()
+		]))
+		.pipe(minifyCSS())
+		.pipe(rename('basalNav.min.css'))
+		.pipe(gulp.dest(paths.dist.css));
+}
 
+gulp.task('scssDemo', scssDemo);
+gulp.task('scssBasalNav', scssBasalNav);
+
+// gulp.task('scss', function() {
+// 	return gulp.src(paths.src.scss)
+// 		.pipe(sass())
+// 		.on('error', function(err) {
+//       console.log(err);
+//       this.emit('end');
+//     })
+// 		.pipe(postcss([
+// 		  autoprefixer()
+// 		]))
+// 		.pipe(minifyCSS())
+// 		.pipe(gulp.dest(paths.dist.css));
+// });
+
+gulp.task('js', function() {
 	return gulp.src(paths.src.basalNav)
 		.pipe(uglify())
 		.pipe(rename('basalNav.min.js'))
 		.pipe(gulp.dest(paths.dist.js));
 });
 
-gulp.task('browserify', function() {
-
-  return browserify(paths.src.basalNav)
-    .bundle()
-    .on('error', function(err){
-      console.log(err);
-      this.emit('end');
-    })
-    .pipe(source('bundle.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest(paths.src.js));
-});
 
 gulp.task('watch', function() {
-	gulp.watch(paths.src.basalNav, ['minify', 'browserify']);
-	gulp.watch(paths.src.scss, ['scss']);
+	gulp.watch(paths.src.basalNav, ['js']);
+	gulp.watch(paths.src.scss.all, ['scssDemo', 'scssBasalNav']);
 });
 
-gulp.task('default', ['watch', 'minify', 'browserify', 'scss']);
+gulp.task('default', ['watch', 'js', 'scssDemo', 'scssBasalNav']);
