@@ -1,12 +1,15 @@
 /*------------------------------------*\
-    #COMPONENTS - HAMBURGER
+    #BASAL-NAV__HAMBURGER
 \*------------------------------------*/
 
 $hamburger-color: $white !default;
 $hamburger-thickness: 2px !default;
 $hamburger-width: 30px !default;
 
-.c-hamburger {
+.basal-nav__hamburger {
+
+  $p: &; // root component class name
+
 	position: relative;
   z-index: 10;
 	width: $hamburger-width;
@@ -26,7 +29,7 @@ $hamburger-width: 30px !default;
     background: none;
   }
 
-  &__lines {
+  &-lines {
   	width: $hamburger-width;
   	height: $hamburger-thickness;
   	background: $hamburger-color;
@@ -56,7 +59,7 @@ $hamburger-width: 30px !default;
 	// transform into 'x'
 	&--close {
 
-		.c-hamburger__lines {
+		#{$p}-lines {
 			transform: rotate(45deg) translate(5px, 5px);
 
 			&:before {

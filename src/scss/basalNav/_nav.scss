@@ -1,8 +1,8 @@
 /*------------------------------------*\
-    #COMPONENTS - NAV
+    #BASAL-NAV__NAV
 \*------------------------------------*/
 
-.c-nav {
+.basal-nav__nav {
 	display: none;
 	position: fixed;
 	bottom: 0;
@@ -19,16 +19,16 @@
 		@include ease('in-out', 0.25);
 	}
 
-	&__list {
+	&-list {
 		list-style-type: none;
 		margin-top: $spacing * 3;
 	}
 
-	&__item {
-		
+	&-item {
+		// Nothing here by default
 	}
 
-	&__link {
+	&-link {
 		display: block;
 		padding: ($spacing / 1.5) ($spacing);
 		color: $white;
@@ -51,22 +51,22 @@
 		width: auto;
 		background: none;
 
-		&__list {
+		&-list {
 			display: flex;
 			margin: 0;
 		}
 
-		&__item {
+		&-item {
 			margin: 0 0 0 $spacing;
 		}
 
-		&__link {
+		&-link {
 			font-size: 1.6rem;
 			padding: 0;
 
 			&:hover {
 				background: none;
-				color: mix(black, $white, 10);
+				color: mix(black, $white, 20);
 			}
 		}
 	}
