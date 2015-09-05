@@ -56,20 +56,6 @@ function scssBasalNav() {
 gulp.task('scssDemo', scssDemo);
 gulp.task('scssBasalNav', scssBasalNav);
 
-// gulp.task('scss', function() {
-// 	return gulp.src(paths.src.scss)
-// 		.pipe(sass())
-// 		.on('error', function(err) {
-//       console.log(err);
-//       this.emit('end');
-//     })
-// 		.pipe(postcss([
-// 		  autoprefixer()
-// 		]))
-// 		.pipe(minifyCSS())
-// 		.pipe(gulp.dest(paths.dist.css));
-// });
-
 gulp.task('js', function() {
 	return gulp.src(paths.src.basalNav)
 		.pipe(uglify())

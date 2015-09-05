@@ -9,13 +9,13 @@
 	right: 0;
 	height: 100%;
 	width: 100%;
-	background: $black;
+	background: $white;
 	will-change: transform;
-	transform: translate(100%, 0);
+	transform: translateX(100%);
 	@include ease('in-out', 0.25);
 
 	&--active {
-		transform: translate(0, 0);
+		transform: translateX(0);
 		@include ease('in-out', 0.25);
 	}
 
@@ -31,11 +31,11 @@
 	&-link {
 		display: block;
 		padding: ($spacing / 1.5) ($spacing);
-		color: $white;
 		font-size: 1.8rem;
+		color: $black;
 
 		&:hover {
-			background: mix(white, $black, 10);
+			background: mix(black, $white, 10);
 		}
 	}
 
@@ -66,8 +66,15 @@
 
 			&:hover {
 				background: none;
-				color: mix(black, $white, 20);
+				color: mix(white, $black, 20);
 			}
 		}
+	}
+}
+
+#nav2 {
+
+	a {
+		color: $white;
 	}
 }

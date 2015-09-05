@@ -56,32 +56,25 @@
     TOGGLE_ELEMENT_ACTIVE_CLASS: 'basal-nav__hamburger--close'
   };
 
-  // Elements
-  var toggle = document.querySelector('.' + defaults.TOGGLE_ELEMENT); // the hamburger
-  if (toggle && toggle.hasAttribute('data-toggle') && toggle.hasAttribute('data-toggle-class')) {
-    var nav = document.querySelector('#' + toggle.getAttribute('data-toggle')); // the navigation
-    var toggleTargetClass = toggle.getAttribute('data-toggle-class'); // the class that animates the navigation in/out
-  }
-
   //
   // Methods
   //
 
-  var showNav = function() {
+  var showNav = function(toggle, nav, navActiveClass) {
 
     // first make the nav visible
     nav.style.display = 'block';
 
     // then animate it by adding the active class
     window.setTimeout(function() {
-      nav.classList.add(toggleTargetClass);
+      nav.classList.add(navActiveClass);
       toggle.classList.add(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
     }, 20);
   };
 
-  var hideNav = function() {
+  var hideNav = function(toggle, nav, navActiveClass) {
 
-    nav.classList.remove(toggleTargetClass);
+    nav.classList.remove(navActiveClass);
     toggle.classList.remove(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
 
     function displayNone() {
@@ -90,7 +83,11 @@
     }
 
     nav.addEventListener(transitionEnd, displayNone, false);
+
+    if (els) els.open = false;
   }
+
+  var els = {};
 
   /**
    * Toggle the Nav
@@ -98,25 +95,28 @@
    */
   var toggleNav = function(event) {
 
-    // check if the clicked element is the hamburger
-    if (event.target === toggle) {
+    if (event.target && event.target.classList.contains(settings.TOGGLE_ELEMENT)) {
+      var toggle = event.target;
+      var nav = document.querySelector('#' + toggle.getAttribute('data-toggle'));
+      var navActiveClass = toggle.getAttribute('data-toggle-class');
 
-      // if the nav doesn't contain the active class then add it
-      if (!nav.classList.contains(toggleTargetClass)) {
+      els.toggle = toggle;
+      els.nav = nav;
+      els.navActiveClass = navActiveClass;
+      els.open = true;
 
-        showNav();
+      if (!nav.classList.contains(navActiveClass)) {
+
+        showNav(toggle, nav, navActiveClass);
 
         // if the nav contains the active class then remove it
-      } else if (nav.classList.contains(toggleTargetClass)) {
+      } else if (nav.classList.contains(navActiveClass)) {
 
-        hideNav();
+        hideNav(toggle, nav, navActiveClass);
 
       }
-
-      // if the clicked element isn't the hamburger && the nav has the active class, then remove it
-    } else if (nav.classList.contains(toggleTargetClass) && toggle.classList.contains(settings.TOGGLE_ELEMENT_ACTIVE_CLASS)) {
-
-      hideNav();
+    } else if (els.open && els.nav.classList.contains(els.navActiveClass)) {
+      hideNav(els.toggle, els.nav, els.navActiveClass);
     }
 
   };
@@ -127,9 +127,9 @@
    */
   var eventHandler = function(event) {
 
-  	if (event.type === 'click') {
-  		toggleNav(event);
-  	}
+    if (event.type === 'click') {
+      toggleNav(event);
+    }
 
   };
 
@@ -138,9 +138,6 @@
    * @public
    */
   BasalNav.destroy = function() {
-
-    // If plugin isn't already initialized, stop
-    if (!settings) return;
 
     // Remove event listeners
     document.removeEventListener('click', eventHandler, false);

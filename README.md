@@ -2,11 +2,10 @@
 Front-end UI navigation component.
 
 ## Demo
-<a href="http://arjanj.github.io/basal-nav/demo/">View demo here.</a>
+<a href="http://arjanj.github.io/basal-nav/demo/">View demo</a>
 
-## Todo
-- remove buoy dependency
-- remove browserify from gulp process
-- rename global Nav object to basalNav
-- prefix css classes with basal
-- decide whether to include header styling as part of the component or leave it to the user
+## ToDo
+- Write documentation
+- Make demo page nicer
+- Add more comments to code
+- Add feature to have collapsed navigation by default
