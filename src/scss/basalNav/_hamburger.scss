@@ -74,5 +74,9 @@ $hamburger-width: 30px !default;
 
 	@include bp-medium {
 		display: none;
+
+    &--collapsed {
+      display: block;
+    }
 	}
 }

@@ -2,7 +2,7 @@
     #BASAL-NAV__NAV
 \*------------------------------------*/
 
-.basal-nav__nav {
+@mixin collapsed($p: '.basal-nav__nav') {
 	display: none;
 	position: fixed;
 	bottom: 0;
@@ -14,21 +14,23 @@
 	transform: translateX(100%);
 	@include ease('in-out', 0.25);
 
-	&--active {
+	&#{$p}--active {
 		transform: translateX(0);
 		@include ease('in-out', 0.25);
 	}
 
-	&-list {
+	#{$p}-list {
+		display: block;
 		list-style-type: none;
 		margin-top: $spacing * 3;
+		padding: 0;
 	}
 
-	&-item {
-		// Nothing here by default
+	#{$p}-item {
+		margin: 0;
 	}
 
-	&-link {
+	#{$p}-link {
 		display: block;
 		padding: ($spacing / 1.5) ($spacing);
 		font-size: 1.8rem;
@@ -42,6 +44,10 @@
 	@include bp-small {
 		width: 300px;
 	}
+}
+
+.basal-nav__nav {
+	@include collapsed();
 
 	@include bp-medium {
 		display: block !important;
@@ -51,16 +57,18 @@
 		width: auto;
 		background: none;
 
-		&-list {
+		$p: '.basal-nav__nav';
+
+		#{$p}-list {
 			display: flex;
 			margin: 0;
 		}
 
-		&-item {
+		#{$p}-item {
 			margin: 0 0 0 $spacing;
 		}
 
-		&-link {
+		#{$p}-link {
 			font-size: 1.6rem;
 			padding: 0;
 
@@ -69,12 +77,9 @@
 				color: mix(white, $black, 20);
 			}
 		}
-	}
-}
 
-#nav2 {
-
-	a {
-		color: $white;
+		&--collapsed {
+			@include collapsed('.basal-nav__nav');
+		}
 	}
 }
