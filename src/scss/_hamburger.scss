@@ -2,10 +2,6 @@
     #BASAL-NAV__HAMBURGER
 \*------------------------------------*/
 
-$hamburger-color: $black !default;
-$hamburger-thickness: 2px !default;
-$hamburger-width: 30px !default;
-
 .basal-nav__hamburger {
 
   $p: &; // root component class name
@@ -74,5 +70,9 @@ $hamburger-width: 30px !default;
 
 	@include bp-medium {
 		display: none;
+
+    &--collapsed {
+      display: block;
+    }
 	}
 }

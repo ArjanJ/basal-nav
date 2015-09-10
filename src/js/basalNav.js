@@ -56,6 +56,9 @@
     TOGGLE_ELEMENT_ACTIVE_CLASS: 'basal-nav__hamburger--close'
   };
 
+  var elements = {};
+  var isActive = false;
+
   //
   // Methods
   //
@@ -70,6 +73,9 @@
       nav.classList.add(navActiveClass);
       toggle.classList.add(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
     }, 20);
+
+    isActive = true;
+
   };
 
   var hideNav = function(toggle, nav, navActiveClass) {
@@ -84,10 +90,9 @@
 
     nav.addEventListener(transitionEnd, displayNone, false);
 
-    if (els) els.open = false;
-  }
+    isActive = false;
 
-  var els = {};
+  };
 
   /**
    * Toggle the Nav
@@ -97,13 +102,18 @@
 
     if (event.target && event.target.classList.contains(settings.TOGGLE_ELEMENT)) {
       var toggle = event.target;
-      var nav = document.querySelector('#' + toggle.getAttribute('data-toggle'));
-      var navActiveClass = toggle.getAttribute('data-toggle-class');
+      var nav;
+      var navActiveClass;
+      if (toggle.hasAttribute('data-toggle') && toggle.hasAttribute('data-toggle-class')) {
+        nav = document.querySelector('#' + toggle.getAttribute('data-toggle'));
+        navActiveClass = toggle.getAttribute('data-toggle-class');
+      } else {
+        throw new Error('Toggle is missing data attributes.');
+      }
 
-      els.toggle = toggle;
-      els.nav = nav;
-      els.navActiveClass = navActiveClass;
-      els.open = true;
+      elements.toggle = toggle;
+      elements.nav = nav;
+      elements.navActiveClass = navActiveClass;
 
       if (!nav.classList.contains(navActiveClass)) {
 
@@ -115,8 +125,8 @@
         hideNav(toggle, nav, navActiveClass);
 
       }
-    } else if (els.open && els.nav.classList.contains(els.navActiveClass)) {
-      hideNav(els.toggle, els.nav, els.navActiveClass);
+    } else if (isActive && elements.nav.classList.contains(elements.navActiveClass)) {
+      hideNav(elements.toggle, elements.nav, elements.navActiveClass);
     }
 
   };
