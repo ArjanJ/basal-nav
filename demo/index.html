@@ -8,30 +8,30 @@
   <meta name="description" content="">
   <meta name="HandheldFriendly" content="True" />
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,300' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="../dist/css/demo.css">
+	<link rel="stylesheet" href="demo.css">
 	<link rel="stylesheet" href="../dist/css/basalNav.min.css">
 </head>
 <body>
 	<header class="demo-header">
 		<a href="" class="demo-header-logo">basalNav.js</a>
 
-		<div class="basal-nav__hamburger" data-toggle="nav" data-toggle-class="basal-nav__nav--active">
+		<div class="basal-nav__hamburger basal-nav__hamburger--collapsed" data-toggle="nav" data-toggle-class="basal-nav--active">
 			<div class="basal-nav__hamburger-lines"></div>
 		</div>
 
-		<nav class="basal-nav__nav" role="navigation" id="nav">
-			<ul class="basal-nav__nav-list">
-				<li class="basal-nav__nav-item">
-					<a href="" class="basal-nav__nav-link">About</a>
+		<nav class="basal-nav basal-nav--collapsed" role="navigation" id="nav">
+			<ul class="basal-nav__list">
+				<li class="basal-nav__item">
+					<a href="" class="basal-nav__link">About</a>
 				</li>
-				<li class="basal-nav__nav-item">
-					<a href="" class="basal-nav__nav-link">Services</a>
+				<li class="basal-nav__item">
+					<a href="" class="basal-nav__link">Services</a>
 				</li>
-				<li class="basal-nav__nav-item">
-					<a href="" class="basal-nav__nav-link">Location</a>
+				<li class="basal-nav__item">
+					<a href="" class="basal-nav__link">Location</a>
 				</li>
-				<li class="basal-nav__nav-item">
-					<a href="" class="basal-nav__nav-link">Contact</a>
+				<li class="basal-nav__item">
+					<a href="" class="basal-nav__link">Contact</a>
 				</li>
 			</ul>
 		</nav>
@@ -44,10 +44,10 @@
 		</div>
 	</main>
 
-
 	<script src="../dist/js/basalNav.min.js"></script>
 	<script>
 		BasalNav.init();
 	</script>
+
 </body>
 </html>

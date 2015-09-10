@@ -1,1 +1,2 @@
-require ('./src/basalNav');
+require ('./src/js/basalNav');
+module.exports = 'BasalNav';

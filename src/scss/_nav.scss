@@ -1,8 +1,8 @@
 /*------------------------------------*\
-    #BASAL-NAV__NAV
+    #BASAL-NAV
 \*------------------------------------*/
 
-@mixin collapsed($p: '.basal-nav__nav') {
+@mixin collapsed($p: '.basal-nav') {
 	display: none;
 	position: fixed;
 	bottom: 0;
@@ -19,18 +19,18 @@
 		@include ease('in-out', 0.25);
 	}
 
-	#{$p}-list {
+	#{$p}__list {
 		display: block;
 		list-style-type: none;
 		margin-top: $spacing * 3;
 		padding: 0;
 	}
 
-	#{$p}-item {
+	#{$p}__item {
 		margin: 0;
 	}
 
-	#{$p}-link {
+	#{$p}__link {
 		display: block;
 		padding: ($spacing / 1.5) ($spacing);
 		font-size: 1.8rem;
@@ -46,7 +46,7 @@
 	}
 }
 
-.basal-nav__nav {
+.basal-nav {
 	@include collapsed();
 
 	@include bp-medium {
@@ -57,18 +57,18 @@
 		width: auto;
 		background: none;
 
-		$p: '.basal-nav__nav';
+		$p: '.basal-nav';
 
-		#{$p}-list {
+		#{$p}__list {
 			display: flex;
 			margin: 0;
 		}
 
-		#{$p}-item {
+		#{$p}__item {
 			margin: 0 0 0 $spacing;
 		}
 
-		#{$p}-link {
+		#{$p}__link {
 			font-size: 1.6rem;
 			padding: 0;
 
@@ -79,7 +79,7 @@
 		}
 
 		&--collapsed {
-			@include collapsed('.basal-nav__nav');
+			@include collapsed('.basal-nav');
 		}
 	}
 }
