@@ -1,4 +1,4 @@
-# basal-nav.js
+# basalNav.js
 Front-end UI navigation component.
 
 ## Demo
