@@ -8,12 +8,12 @@ Front-end UI navigation component.
 ```
 <div class="basal-nav">
 
-        <!-- HAMBURGER -->
+	<!-- HAMBURGER -->
 	<div class="basal-nav__hamburger">
 		<div class="basal-nav__hamburger-lines"></div>
 	</div>
         
-        <!-- NAVIGATION -->
+	<!-- NAVIGATION -->
 	<nav class="basal-nav__nav">
 		<ul class="basal-nav__list">
 			<li class="basal-nav__item">
