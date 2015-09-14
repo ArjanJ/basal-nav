@@ -24,7 +24,7 @@ var paths = {
 	}
 };
 
-function scss() {
+gulp.task('scss', function() {
 	return gulp.src(paths.src.scss.all)
 		.pipe(sass())
 		.on('error', function(err) {
@@ -34,12 +34,10 @@ function scss() {
 		.pipe(postcss([
 		  autoprefixer()
 		]))
-		// .pipe(minifyCSS())
+		.pipe(minifyCSS())
 		.pipe(rename('basalNav.min.css'))
 		.pipe(gulp.dest(paths.dist.css));
-}
-
-gulp.task('scss', scss);
+});
 
 gulp.task('js', function() {
 	return gulp.src(paths.src.js.basalNav)
