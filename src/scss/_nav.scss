@@ -2,9 +2,9 @@
     #BASAL-NAV
 \*------------------------------------*/
 
-@mixin collapsed() {
+$p: '.basal-nav';
 
-	$p: '.basal-nav';
+@mixin collapsed() {
 
 	#{$p}__nav {
 		display: none;
@@ -40,10 +40,6 @@
 		padding: ($spacing / 1.5) ($spacing);
 		font-size: 1.8rem;
 		color: $black;
-
-		&:hover {
-			background: mix(black, $white, 10);
-		}
 	}
 
 	@include bp-small {
@@ -55,8 +51,6 @@
 }
 
 @mixin expanded() {
-
-	$p: '.basal-nav';
 
 	#{$p}__nav {
 		display: block !important;
@@ -79,11 +73,6 @@
 	#{$p}__link {
 		font-size: 1.6rem;
 		padding: 0;
-
-		&:hover {
-			background: none;
-			color: mix(white, $black, 20);
-		}
 	}
 }
 
