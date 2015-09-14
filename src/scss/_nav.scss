@@ -2,19 +2,24 @@
     #BASAL-NAV
 \*------------------------------------*/
 
-@mixin collapsed($p: '.basal-nav') {
-	display: none;
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	height: 100%;
-	width: 100%;
-	background: $white;
-	will-change: transform;
-	transform: translateX(100%);
-	@include ease('in-out', 0.25);
+@mixin collapsed() {
 
-	&#{$p}--active {
+	$p: '.basal-nav';
+
+	#{$p}__nav {
+		display: none;
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		height: 100%;
+		width: 100%;
+		background: $white;
+		will-change: transform;
+		transform: translateX(100%);
+		@include ease('in-out', 0.25);
+	}
+
+	#{$p}__nav--active {
 		transform: translateX(0);
 		@include ease('in-out', 0.25);
 	}
@@ -42,44 +47,55 @@
 	}
 
 	@include bp-small {
-		width: 300px;
+
+		#{$p}__nav {
+			width: 300px;
+		}
 	}
 }
 
-.basal-nav {
-	@include collapsed();
+@mixin expanded() {
 
-	@include bp-medium {
+	$p: '.basal-nav';
+
+	#{$p}__nav {
 		display: block !important;
 		transform: none;
 		position: static;
 		height: auto;
 		width: auto;
 		background: none;
+	}
 
-		$p: '.basal-nav';
+	#{$p}__list {
+		display: flex;
+		margin: 0;
+	}
 
-		#{$p}__list {
-			display: flex;
-			margin: 0;
+	#{$p}__item {
+		margin: 0 0 0 $spacing;
+	}
+
+	#{$p}__link {
+		font-size: 1.6rem;
+		padding: 0;
+
+		&:hover {
+			background: none;
+			color: mix(white, $black, 20);
 		}
+	}
+}
 
-		#{$p}__item {
-			margin: 0 0 0 $spacing;
-		}
+.basal-nav {
+	@include collapsed;
 
-		#{$p}__link {
-			font-size: 1.6rem;
-			padding: 0;
+	@include bp-medium {
 
-			&:hover {
-				background: none;
-				color: mix(white, $black, 20);
-			}
-		}
+		@include expanded;
 
 		&--collapsed {
-			@include collapsed('.basal-nav');
+			@include collapsed;
 		}
 	}
 }

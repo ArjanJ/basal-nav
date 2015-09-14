@@ -5,7 +5,8 @@
 .basal-nav__hamburger {
 
   $p: &; // root component class name
-
+  
+  margin: 0 0 0 auto;
 	position: relative;
   z-index: 10;
 	width: $hamburger-width;
@@ -53,7 +54,7 @@
   }
 
 	// transform into 'x'
-	&--close {
+	&--active {
 
 		#{$p}-lines {
 			transform: rotate(45deg) translate(5px, 5px);

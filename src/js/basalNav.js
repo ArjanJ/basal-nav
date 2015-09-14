@@ -10,32 +10,26 @@
 
   'use strict';
 
-  //
-  // Variables
-  //
+  function BasalNav(basalNavParent) {
 
-  var BasalNav = {}; // Object for public APIs
-  var settings; // Placeholder variables
+    var bn = this;
+    var parent = basalNavParent;
 
-  // Merge two objects
-  var extend = function (defaults, options) {
-    var extended = {};
-    var prop;
-    for (prop in defaults) {
-      if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
-          extended[prop] = defaults[prop];
-      }
-    }
-    for (prop in options) {
-      if (Object.prototype.hasOwnProperty.call(options, prop)) {
-          extended[prop] = options[prop];
-      }
-    }
-    return extended;
-  };
+    var NAV_OPEN = 0;
+    var NAV_CLOSED = 1;
+    var NAV_SELECTOR = '.basal-nav__nav';
+    var NAV_CLASS_NAME_ACTIVE = 'basal-nav__nav--active';
+    var HAMBURGER_SELECTOR = '.basal-nav__hamburger';
+    var HAMBURGER_CLASS_NAME_ACTIVE = 'basal-nav__hamburger--active';
+    var DISMISS_EVENT = window.hasOwnProperty('ontouchstart') ? 'ontouchstart' : 'click';
 
-  // Check for transitionend event
-  var transitions = {
+    bn._state = NAV_CLOSED;
+
+    bn._nav = parent.querySelector(NAV_SELECTOR);
+    bn._hamburger = parent.querySelector(HAMBURGER_SELECTOR);
+
+    // Check for transitionend event
+    var transitions = {
       'transition': 'transitionend',
       'WebkitTransition': 'webkitTransitionEnd',
       'MozTransition': 'transitionend',
@@ -43,143 +37,74 @@
     },
     elem = document.createElement('div');
 
-  for (var t in transitions) {
-    if (typeof elem.style[t] !== 'undefined') {
-      window.transitionEnd = transitions[t];
-      break;
+    for (var t in transitions) {
+      if (typeof elem.style[t] !== 'undefined') {
+        window.transitionEnd = transitions[t];
+        break;
+      }
+    }
+
+    bn.open = function() {
+      if (bn._state !== NAV_OPEN) {
+        bn._nav.style.display = 'block';
+
+        window.setTimeout(function() {
+          bn._nav.classList.add(NAV_CLASS_NAME_ACTIVE);
+          bn._hamburger.classList.add(HAMBURGER_CLASS_NAME_ACTIVE);
+          bn._state = NAV_OPEN;
+        }, 20);
+
+      }
+    };
+
+    bn.close = function() {
+      if (bn._state !== NAV_CLOSED) {
+        bn._nav.classList.remove(NAV_CLASS_NAME_ACTIVE);
+        bn._hamburger.classList.remove(HAMBURGER_CLASS_NAME_ACTIVE);
+
+        function displayNoneNav() {
+          bn._nav.style.display = 'none';
+          bn._nav.removeEventListener(transitionEnd, displayNoneNav, false);
+        }
+
+        bn._nav.addEventListener(transitionEnd, displayNoneNav, false);
+
+        bn._state = NAV_CLOSED;
+      }
+    };
+
+    bn.toggle = function() {
+      bn[bn._state === NAV_CLOSED ? 'open' : 'close']();
+    };
+
+    bn.eventHandler = function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      bn.toggle();
+    };
+
+    bn.init = function() {
+      bn._hamburger.addEventListener('click', bn.eventHandler, false);
+      document.addEventListener(DISMISS_EVENT, function(event) {
+        var target = event.target;
+        if (!bn._nav.contains(target) && target.nodeName !== 'A') {
+          bn.close();
+        }
+      });
+    };
+
+    bn.init();
+
+  }
+
+  function init() {
+    var nav = document.querySelectorAll('.basal-nav');
+    for (var i = 0; i < nav.length; i++) {
+      var bn = new BasalNav(nav[i]);
     }
   }
 
-  // Default settings
-  var defaults = {
-    TOGGLE_ELEMENT: 'basal-nav__hamburger',
-    TOGGLE_ELEMENT_ACTIVE_CLASS: 'basal-nav__hamburger--close'
-  };
+  init();
 
-  var elements = {};
-  var isActive = false;
-
-  //
-  // Methods
-  //
-
-  var showNav = function(toggle, nav, navActiveClass) {
-
-    // first make the nav visible
-    nav.style.display = 'block';
-
-    // then animate it by adding the active class
-    window.setTimeout(function() {
-      nav.classList.add(navActiveClass);
-      toggle.classList.add(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
-    }, 20);
-
-    isActive = true;
-
-  };
-
-  var hideNav = function(toggle, nav, navActiveClass) {
-
-    nav.classList.remove(navActiveClass);
-    toggle.classList.remove(settings.TOGGLE_ELEMENT_ACTIVE_CLASS);
-
-    function displayNone() {
-      nav.style.display = 'none';
-      nav.removeEventListener(transitionEnd, displayNone, false);
-    }
-
-    nav.addEventListener(transitionEnd, displayNone, false);
-
-    isActive = false;
-
-  };
-
-  /**
-   * Toggle the Nav
-   * @private
-   */
-  var toggleNav = function(event) {
-
-    if (event.target && event.target.classList.contains(settings.TOGGLE_ELEMENT)) {
-      var toggle = event.target;
-      var nav;
-      var navActiveClass;
-      if (toggle.hasAttribute('data-toggle') && toggle.hasAttribute('data-toggle-class')) {
-        nav = document.querySelector('#' + toggle.getAttribute('data-toggle'));
-        navActiveClass = toggle.getAttribute('data-toggle-class');
-      } else {
-        throw new Error('Toggle is missing data attributes.');
-      }
-
-      elements.toggle = toggle;
-      elements.nav = nav;
-      elements.navActiveClass = navActiveClass;
-
-      if (!nav.classList.contains(navActiveClass)) {
-
-        showNav(toggle, nav, navActiveClass);
-
-        // if the nav contains the active class then remove it
-      } else if (nav.classList.contains(navActiveClass)) {
-
-        hideNav(toggle, nav, navActiveClass);
-
-      }
-    } else if (isActive && elements.nav.classList.contains(elements.navActiveClass)) {
-      hideNav(elements.toggle, elements.nav, elements.navActiveClass);
-    }
-
-  };
-
-  /**
-   * Handle events
-   * @private
-   */
-  var eventHandler = function(event) {
-
-    if (event.type === 'click') {
-      toggleNav(event);
-    }
-
-  };
-
-  /**
-   * Destroy the current initialization.
-   * @public
-   */
-  BasalNav.destroy = function() {
-
-    // Remove event listeners
-    document.removeEventListener('click', eventHandler, false);
-
-    // Reset variables
-    settings = null;
-
-  };
-
-  /**
-   * Initialize Plugin
-   * @public
-   * @param {Object} options User settings
-   */
-  BasalNav.init = function(options) {
-
-    // Destroy any existing initializations
-    BasalNav.destroy();
-
-    // Merge user options with defaults
-    settings = extend(defaults, options || {});
-
-    // Listen for click events
-    document.addEventListener('click', eventHandler, false);
-
-  };
-
-
-  //
-  // Public APIs
-  //
-
-  return BasalNav;
 
 });

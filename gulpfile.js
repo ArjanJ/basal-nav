@@ -34,7 +34,7 @@ function scss() {
 		.pipe(postcss([
 		  autoprefixer()
 		]))
-		.pipe(minifyCSS())
+		// .pipe(minifyCSS())
 		.pipe(rename('basalNav.min.css'))
 		.pipe(gulp.dest(paths.dist.css));
 }
