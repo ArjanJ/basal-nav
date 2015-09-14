@@ -4,8 +4,20 @@ Front-end UI navigation component.
 ## Demo
 <a href="http://arjanj.github.io/basal-nav/demo/">View demo</a>
 
-## ToDo
-- Write documentation
-- Make demo page nicer
-- Add more comments to code
-- Add feature to have collapsed navigation by default
+## HTML Structure
+```
+<div class="basal-nav">
+	<div class="basal-nav__hamburger">
+		<div class="basal-nav__hamburger-lines"></div>
+	</div>
+
+	<nav class="basal-nav__nav">
+		<ul class="basal-nav__list">
+			<li class="basal-nav__item">
+				<a href="" class="basal-nav__link">About</a>
+			</li>
+			...
+		</ul>
+	</nav>
+</div>
+```
