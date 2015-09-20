@@ -1,14 +1,15 @@
 /*------------------------------------*\
-    #BASAL-NAV
+    #BASAL-NAV NAV
 \*------------------------------------*/
 
-$p: '.basal-nav';
+$className: '.basal-nav';
 
 @mixin collapsed() {
 
-	#{$p}__nav {
+	#{$className}__nav {
 		display: none;
 		position: fixed;
+		z-index: 999;
 		bottom: 0;
 		right: 0;
 		height: 100%;
@@ -19,23 +20,23 @@ $p: '.basal-nav';
 		@include ease('in-out', 0.25);
 	}
 
-	#{$p}__nav--active {
+	#{$className}__nav--active {
 		transform: translateX(0);
 		@include ease('in-out', 0.25);
 	}
 
-	#{$p}__list {
+	#{$className}__list {
 		display: block;
 		list-style-type: none;
 		margin-top: $spacing * 3;
 		padding: 0;
 	}
 
-	#{$p}__item {
+	#{$className}__item {
 		margin: 0;
 	}
 
-	#{$p}__link {
+	#{$className}__link {
 		display: block;
 		padding: ($spacing / 1.5) ($spacing);
 		font-size: 1.8rem;
@@ -44,7 +45,7 @@ $p: '.basal-nav';
 
 	@include bp-small {
 
-		#{$p}__nav {
+		#{$className}__nav {
 			width: 300px;
 		}
 	}
@@ -52,8 +53,8 @@ $p: '.basal-nav';
 
 @mixin expanded() {
 
-	#{$p}__nav {
-		display: block !important;
+	#{$className}__nav {
+		display: block;
 		transform: none;
 		position: static;
 		height: auto;
@@ -61,16 +62,16 @@ $p: '.basal-nav';
 		background: none;
 	}
 
-	#{$p}__list {
+	#{$className}__list {
 		display: flex;
 		margin: 0;
 	}
 
-	#{$p}__item {
+	#{$className}__item {
 		margin: 0 0 0 $spacing;
 	}
 
-	#{$p}__link {
+	#{$className}__link {
 		font-size: 1.6rem;
 		padding: 0;
 	}

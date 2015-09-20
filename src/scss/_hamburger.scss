@@ -1,5 +1,5 @@
 /*------------------------------------*\
-    #BASAL-NAV__HAMBURGER
+    #BASAL-NAV HAMBURGER
 \*------------------------------------*/
 
 .basal-nav__hamburger {
@@ -8,7 +8,7 @@
 
   margin: 0 0 0 auto;
 	position: relative;
-  z-index: 10;
+  z-index: 1000;
 	width: $hamburger-width;
 	height: 17px;
 	cursor: pointer;

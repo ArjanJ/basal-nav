@@ -1,110 +1,150 @@
 (function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(factory);
-  } else if (typeof exports === 'object') {
-    module.exports = factory();
-  } else {
-    root.BasalNav = factory();
-  }
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof exports === 'object') {
+		module.exports = factory();
+	} else {
+		root.BasalNav = factory();
+	}
 })(this, function() {
 
-  'use strict';
+	'use strict';
 
-  function BasalNav(basalNavParent) {
+	/**
+	 * Class constructor for BasalNav component.
+	 *
+	 * @constructor
+	 * @param {HTMLElement} The navigation element.
+	 */
+	var BasalNav = function(element) {
+		this._element = element;
+		this.init();
+	};
 
-    var bn = this;
-    var parent = basalNavParent;
+	/**
+	 * CSS class names of elements stored as strings.
+	 *
+	 * @private
+	 */
+	BasalNav.prototype._CssClasses = {
+		CONTAINER: 'basal-nav',
+		NAV: 'basal-nav__nav',
+		NAV_ACTIVE: 'basal-nav__nav--active',
+		LIST: 'basal-nav__list',
+		ITEM: 'basal-nav__item',
+		LINK: 'basal-nav__link',
+		HAMBURGER: 'basal-nav__hamburger',
+		HAMBURGER_ACTIVE: 'basal-nav__hamburger--active',
+		OVERLAY: 'basal-nav__overlay',
+		OVERLAY_ACTIVE: 'basal-nav__overlay--active'
+	};
 
-    var NAV_OPEN = 0;
-    var NAV_CLOSED = 1;
-    var NAV_SELECTOR = '.basal-nav__nav';
-    var NAV_CLASS_NAME_ACTIVE = 'basal-nav__nav--active';
-    var HAMBURGER_SELECTOR = '.basal-nav__hamburger';
-    var HAMBURGER_CLASS_NAME_ACTIVE = 'basal-nav__hamburger--active';
-    var DISMISS_EVENT = window.hasOwnProperty('ontouchstart') ? 'ontouchstart' : 'click';
+	/**
+	 * Initialize component, add event listeners to elements.
+	 */
+	BasalNav.prototype.init = function() {
+		if (this._element) {
+			var nav = this._element.querySelector('.' + this._CssClasses.NAV);
+			var hamburger = this._element.querySelector('.' + this._CssClasses.HAMBURGER);
+			var overlay = this._element.querySelector('.' + this._CssClasses.OVERLAY);
 
-    bn._state = NAV_CLOSED;
+			this._nav = nav;
+			this._hamburger = hamburger;
+			this._overlay = overlay;
 
-    bn._nav = parent.querySelector(NAV_SELECTOR);
-    bn._hamburger = parent.querySelector(HAMBURGER_SELECTOR);
+			hamburger.addEventListener('click', this._handleClick.bind(this));
+			overlay.addEventListener('click', this._handleClick.bind(this));
+		}
+	};
 
-    // Check for transitionend event
-    var transitions = {
-      'transition': 'transitionend',
-      'WebkitTransition': 'webkitTransitionEnd',
-      'MozTransition': 'transitionend',
-      'OTransition': 'otransitionend'
-    },
-    elem = document.createElement('div');
+	/**
+	 * Handles the click event fired from the element.
+	 *
+	 * @param {Event} The event that fired.
+	 * @private
+	 */
+	BasalNav.prototype._handleClick = function(event) {
+		this._toggle(event);
+	};
 
-    for (var t in transitions) {
-      if (typeof elem.style[t] !== 'undefined') {
-        window.transitionEnd = transitions[t];
-        break;
-      }
-    }
+	/**
+	 * Checks if the Nav element has the active class or not and fires the show
+	 * or hide functions.
+	 *
+	 * @param {Event} The event that fired.
+	 * @private
+	 */
+	BasalNav.prototype._toggle = function(event) {
+		if (this._nav.classList.contains(this._CssClasses.NAV_ACTIVE)) {
+			this._hide();
+		} else {
+			this._show(event);
+		}
+	};
 
-    bn.open = function() {
-      if (bn._state !== NAV_OPEN) {
-        bn._nav.style.display = 'block';
 
-        window.setTimeout(function() {
-          bn._nav.classList.add(NAV_CLASS_NAME_ACTIVE);
-          bn._hamburger.classList.add(HAMBURGER_CLASS_NAME_ACTIVE);
-          bn._state = NAV_OPEN;
-        }, 20);
+	/**
+	 * Hides the navigation.
+	 *
+	 * @private
+	 */
+	BasalNav.prototype._hide = function() {
+		if (this._nav && this._hamburger) {
+			this._nav.classList.remove(this._CssClasses.NAV_ACTIVE);
+			this._hamburger.classList.remove(this._CssClasses.HAMBURGER_ACTIVE);
+			this._overlay.classList.remove(this._CssClasses.OVERLAY_ACTIVE);
 
-      }
-    };
+			this._addTransitionEndListener();
+		}
+	};
 
-    bn.close = function() {
-      if (bn._state !== NAV_CLOSED) {
-        bn._nav.classList.remove(NAV_CLASS_NAME_ACTIVE);
-        bn._hamburger.classList.remove(HAMBURGER_CLASS_NAME_ACTIVE);
+	/**
+	 * Shows the navigation.
+	 *
+	 * @private
+	 */
+	BasalNav.prototype._show = function(event) {
+		event.stopPropagation();
 
-        function displayNoneNav() {
-          bn._nav.style.display = 'none';
-          bn._nav.removeEventListener(transitionEnd, displayNoneNav, false);
-        }
+		if (this._nav && this._hamburger) {
+			this._nav.style.display = 'block';
 
-        bn._nav.addEventListener(transitionEnd, displayNoneNav, false);
+			window.setTimeout(function() {
+				this._nav.classList.add(this._CssClasses.NAV_ACTIVE);
+				this._hamburger.classList.add(this._CssClasses.HAMBURGER_ACTIVE);
+				this._overlay.classList.add(this._CssClasses.OVERLAY_ACTIVE);
+			}.bind(this), 20);
 
-        bn._state = NAV_CLOSED;
-      }
-    };
+		}
+	};
 
-    bn.toggle = function() {
-      bn[bn._state === NAV_CLOSED ? 'open' : 'close']();
-    };
+	/**
+	 * Adds 'display: none' to the nav after the transitionEnd event is done,
+	 * then removes the transitionEnd event listener.
+	 *
+	 * @private
+	 */
+	BasalNav.prototype._addTransitionEndListener = function() {
+		var hideNav = function() {
+			this._nav.style.display = 'none';
+			this._nav.removeEventListener('transitionend', hideNav);
+			this._nav.removeEventListener('webkitTransitionend', hideNav);
+		}.bind(this);
 
-    bn.eventHandler = function(event) {
-      event.stopPropagation();
-      event.preventDefault();
-      bn.toggle();
-    };
+		this._nav.addEventListener('transitionend', hideNav);
+		this._nav.addEventListener('webkitTransitionend', hideNav);
+	};
 
-    bn.init = function() {
-      bn._hamburger.addEventListener('click', bn.eventHandler, false);
-      document.addEventListener(DISMISS_EVENT, function(event) {
-        var target = event.target;
-        if (!bn._nav.contains(target) && target.nodeName !== 'A') {
-          bn.close();
-        }
-      });
-    };
+	/**
+	 * Initialize all instances of Basal Nav component.
+	 */
+	var init = function() {
+		var el = document.querySelectorAll('.basal-nav');
+		for (var i = 0; i < el.length; i++) {
+			var bn = new BasalNav(el[i]);
+		}
+	};
 
-    bn.init();
-
-  }
-
-  function init() {
-    var nav = document.querySelectorAll('.basal-nav');
-    for (var i = 0; i < nav.length; i++) {
-      var bn = new BasalNav(nav[i]);
-    }
-  }
-
-  init();
-
+	init();
 
 });
