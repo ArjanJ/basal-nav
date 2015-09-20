@@ -34,7 +34,7 @@ gulp.task('scss', function() {
 		.pipe(postcss([
 		  autoprefixer()
 		]))
-		.pipe(minifyCSS())
+		// .pipe(minifyCSS())
 		.pipe(rename('basalNav.min.css'))
 		.pipe(gulp.dest(paths.dist.css));
 });
@@ -45,7 +45,7 @@ gulp.task('js', function() {
       console.log(err);
       this.emit('end');
     })
-		.pipe(uglify())
+		// .pipe(uglify())
 		.pipe(rename('basalNav.min.js'))
 		.pipe(gulp.dest(paths.dist.js));
 });

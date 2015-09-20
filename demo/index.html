@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>basalNav.js Demo</title>
+  <title>BasalNav.js Demo</title>
   <meta name="description" content="">
   <meta name="HandheldFriendly" content="True" />
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
@@ -13,10 +13,10 @@
 </head>
 <body>
 	<header class="demo-header">
-		<a href="" class="demo-header-logo">basalNav.js</a>
+		<a href="" class="demo-header-logo">BasalNav.js</a>
 
-		<div class="basal-nav">
-			<div class="basal-nav__hamburger">
+		<div class="basal-nav basal-nav--collapsed">
+			<div class="basal-nav__hamburger basal-nav__hamburger--collapsed">
 				<div class="basal-nav__hamburger-lines"></div>
 			</div>
 
@@ -36,11 +36,15 @@
 					</li>
 				</ul>
 			</nav>
+
+			<div class="basal-nav__overlay"></div>
 		</div>
 	</header>
 
 	<main class="demo-main">
-		<div class="demo-main-wrapper"></div>
+		<div class="demo-main-wrapper">
+			
+		</div>
 	</main>
 
 	<script src="../dist/js/basalNav.min.js"></script>
