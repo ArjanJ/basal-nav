@@ -4,70 +4,43 @@
 
 .basal-nav__hamburger {
 
-  $p: &; // root component class name
+  $class: &; // root component class name
 
   margin: 0 0 0 auto;
+  padding: 0;
 	position: relative;
   z-index: 1000;
-	width: $hamburger-width;
-	height: 17px;
 	cursor: pointer;
+  appearance: none;
+  border: none;
+  background: none;
 	// remove tap highlight on android devices
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: rgba(black, 0);
   -webkit-tap-highlight-color: transparent;
 
-  &:before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 5;
-    background: none;
+  &:focus {
+    outline: none;
   }
 
-  &-lines {
-  	width: $hamburger-width;
-  	height: $hamburger-thickness;
-  	background: $hamburger-color;
+  &:active {
+
+    #{$class}-line {
+      opacity: 0.5;
+    }
+  }
+
+  &-line {
+    display: block;
+    margin: 0 0 5px 0;
+    width: $hamburger-width;
+    height: $hamburger-thickness;
+    background: $hamburger-color;
     pointer-events: none;
-  	@include ease('in-out', 0.25);
 
-  	&:before,
-  	&:after {
-  		content: "";
-  		position: absolute;
-  		left: 0;
-  		width: $hamburger-width;
-  		height: $hamburger-thickness;
-  		background: $hamburger-color;
-  		@include ease('in-out', 0.25);
-  	}
-
-  	&:before {
-  		top: 7px;
-  	}
-
-  	&:after {
-  		top: 14px;
-  	}
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
-
-	// transform into 'x'
-	&--active {
-
-		#{$p}-lines {
-			transform: rotate(45deg) translate(5px, 5px);
-
-			&:before {
-				opacity: 0;
-			}
-
-			&:after {
-				transform: rotate(-90deg) translateX(14px);
-			}
-		}
-	}
 
 	@include bp-medium {
 		display: none;

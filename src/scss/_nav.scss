@@ -22,7 +22,6 @@ $className: '.basal-nav';
 
 	#{$className}__nav--active {
 		transform: translateX(0);
-		@include ease('in-out', 0.25);
 	}
 
 	#{$className}__list {
