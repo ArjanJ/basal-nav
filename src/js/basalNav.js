@@ -14,7 +14,7 @@
 	 * Class constructor for BasalNav component.
 	 *
 	 * @constructor
-	 * @param {HTMLElement} The navigation element.
+	 * @param {HTMLElement} element The navigation element.
 	 */
 	var BasalNav = function(element) {
 		this._element = element;
@@ -28,6 +28,7 @@
 	 */
 	BasalNav.prototype._CssClasses = {
 		CONTAINER: 'basal-nav',
+		CONTAINER_COLLAPSED: 'basal-nav--collapsed',
 		NAV: 'basal-nav__nav',
 		NAV_ACTIVE: 'basal-nav__nav--active',
 		LIST: 'basal-nav__list',
@@ -38,6 +39,9 @@
 		OVERLAY: 'basal-nav__overlay',
 		OVERLAY_ACTIVE: 'basal-nav__overlay--active'
 	};
+
+	// Breakpoint
+	var desktop = 768;
 
 	/**
 	 * Initialize component, add event listeners to elements.
@@ -52,15 +56,18 @@
 			this._hamburger = hamburger;
 			this._overlay = overlay;
 
+			this._setAriaAttributes();
+
 			hamburger.addEventListener('click', this._handleClick.bind(this));
 			overlay.addEventListener('click', this._handleClick.bind(this));
+			window.addEventListener('resize', this._handleResize.bind(this));
 		}
 	};
 
 	/**
 	 * Handles the click event fired from the element.
 	 *
-	 * @param {Event} The event that fired.
+	 * @param {Event} event The event that fired.
 	 * @private
 	 */
 	BasalNav.prototype._handleClick = function(event) {
@@ -95,6 +102,7 @@
 			this._overlay.classList.remove(this._CssClasses.OVERLAY_ACTIVE);
 
 			this._addTransitionEndListener();
+			this._setAriaAttributes();
 		}
 	};
 
@@ -113,6 +121,7 @@
 				this._nav.classList.add(this._CssClasses.NAV_ACTIVE);
 				this._hamburger.classList.add(this._CssClasses.HAMBURGER_ACTIVE);
 				this._overlay.classList.add(this._CssClasses.OVERLAY_ACTIVE);
+				this._setAriaAttributes();
 			}.bind(this), 20);
 
 		}
@@ -133,6 +142,53 @@
 
 		this._nav.addEventListener('transitionend', hideNav);
 		this._nav.addEventListener('webkitTransitionend', hideNav);
+	};
+
+	/**
+	 * Add ARIA Attributes.
+	 *
+	 * @private
+	 */
+	BasalNav.prototype._setAriaAttributes = function() {
+		if (this._hamburger && this._nav) {
+			if (this._nav.classList.contains(this._CssClasses.NAV_ACTIVE)) {
+				this._hamburger.setAttribute('aria-expanded', 'true');
+				this._nav.setAttribute('aria-hidden', 'false');
+			} else {
+				this._hamburger.setAttribute('aria-expanded', 'false');
+				this._nav.setAttribute('aria-hidden', 'true');
+			}
+		}
+	};
+
+	/**
+	 * Remove 'active' classes from elements when the window is resized larger
+	 * than desktop size. Doesn't apply to 'basal-nav--collapsed'.
+	 *
+	 * @private
+	 */
+	BasalNav.prototype._handleResize = debounce(function() {
+		if (window.innerWidth >= desktop && !this._element.classList.contains(this._CssClasses.CONTAINER_COLLAPSED)) {
+			this._nav.classList.remove(this._CssClasses.NAV_ACTIVE);
+			this._hamburger.classList.remove(this._CssClasses.HAMBURGER_ACTIVE);
+			this._overlay.classList.remove(this._CssClasses.OVERLAY_ACTIVE);
+			this._nav.removeAttribute('style');
+		}
+	}, 150);
+
+	function debounce(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
 	};
 
 	/**
