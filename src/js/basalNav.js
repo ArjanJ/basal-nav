@@ -48,18 +48,14 @@
 	 */
 	BasalNav.prototype.init = function() {
 		if (this._element) {
-			var nav = this._element.querySelector('.' + this._CssClasses.NAV);
-			var hamburger = this._element.querySelector('.' + this._CssClasses.HAMBURGER);
-			var overlay = this._element.querySelector('.' + this._CssClasses.OVERLAY);
-
-			this._nav = nav;
-			this._hamburger = hamburger;
-			this._overlay = overlay;
+			this._nav = this._element.querySelector('.' + this._CssClasses.NAV);
+			this._hamburger = this._element.querySelector('.' + this._CssClasses.HAMBURGER);
+			this._overlay = this._element.querySelector('.' + this._CssClasses.OVERLAY);
 
 			this._setAriaAttributes();
 
-			hamburger.addEventListener('click', this._handleClick.bind(this));
-			overlay.addEventListener('click', this._handleClick.bind(this));
+			this._hamburger.addEventListener('click', this._handleClick.bind(this));
+			this._overlay.addEventListener('click', this._handleClick.bind(this));
 			window.addEventListener('resize', this._handleResize.bind(this));
 		}
 	};
@@ -88,7 +84,6 @@
 			this._show(event);
 		}
 	};
-
 
 	/**
 	 * Hides the navigation.
@@ -176,6 +171,7 @@
 		}
 	}, 150);
 
+
 	function debounce(func, wait, immediate) {
 		var timeout;
 		return function() {
@@ -189,10 +185,12 @@
 			timeout = setTimeout(later, wait);
 			if (callNow) func.apply(context, args);
 		};
-	};
+	}
 
 	/**
 	 * Initialize all instances of Basal Nav component.
+	 *
+	 * @public
 	 */
 	var init = function() {
 		var el = document.querySelectorAll('.basal-nav');
