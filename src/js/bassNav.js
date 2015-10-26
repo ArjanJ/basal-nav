@@ -4,19 +4,19 @@
 	} else if (typeof exports === 'object') {
 		module.exports = factory();
 	} else {
-		root.BasalNav = factory();
+		root.BassNav = factory();
 	}
 })(this, function() {
 
 	'use strict';
 
 	/**
-	 * Class constructor for BasalNav component.
+	 * Class constructor for BassNav component.
 	 *
 	 * @constructor
 	 * @param {HTMLElement} element The navigation element.
 	 */
-	var BasalNav = function(element) {
+	var BassNav = function(element) {
 		this._element = element;
 		this.init();
 	};
@@ -26,18 +26,18 @@
 	 *
 	 * @private
 	 */
-	BasalNav.prototype._CssClasses = {
-		CONTAINER: 'basal-nav',
-		CONTAINER_COLLAPSED: 'basal-nav--collapsed',
-		NAV: 'basal-nav__nav',
-		NAV_ACTIVE: 'basal-nav__nav--active',
-		LIST: 'basal-nav__list',
-		ITEM: 'basal-nav__item',
-		LINK: 'basal-nav__link',
-		HAMBURGER: 'basal-nav__hamburger',
-		HAMBURGER_ACTIVE: 'basal-nav__hamburger--active',
-		OVERLAY: 'basal-nav__overlay',
-		OVERLAY_ACTIVE: 'basal-nav__overlay--active'
+	BassNav.prototype._CssClasses = {
+		CONTAINER: 'bass-nav',
+		CONTAINER_COLLAPSED: 'bass-nav--collapsed',
+		NAV: 'bass-nav__nav',
+		NAV_ACTIVE: 'bass-nav__nav--active',
+		LIST: 'bass-nav__list',
+		ITEM: 'bass-nav__item',
+		LINK: 'bass-nav__link',
+		HAMBURGER: 'bass-nav__hamburger',
+		HAMBURGER_ACTIVE: 'bass-nav__hamburger--active',
+		OVERLAY: 'bass-nav__overlay',
+		OVERLAY_ACTIVE: 'bass-nav__overlay--active'
 	};
 
 	// Breakpoint
@@ -46,7 +46,7 @@
 	/**
 	 * Initialize component, add event listeners to elements.
 	 */
-	BasalNav.prototype.init = function() {
+	BassNav.prototype.init = function() {
 		if (this._element) {
 			this._nav = this._element.querySelector('.' + this._CssClasses.NAV);
 			this._hamburger = this._element.querySelector('.' + this._CssClasses.HAMBURGER);
@@ -66,7 +66,7 @@
 	 * @param {Event} event The event that fired.
 	 * @private
 	 */
-	BasalNav.prototype._handleClick = function(event) {
+	BassNav.prototype._handleClick = function(event) {
 		this._toggle(event);
 	};
 
@@ -77,7 +77,7 @@
 	 * @param {Event} The event that fired.
 	 * @private
 	 */
-	BasalNav.prototype._toggle = function(event) {
+	BassNav.prototype._toggle = function(event) {
 		if (this._nav.classList.contains(this._CssClasses.NAV_ACTIVE)) {
 			this._hide();
 		} else {
@@ -90,7 +90,7 @@
 	 *
 	 * @private
 	 */
-	BasalNav.prototype._hide = function() {
+	BassNav.prototype._hide = function() {
 		if (this._nav && this._hamburger) {
 			this._nav.classList.remove(this._CssClasses.NAV_ACTIVE);
 			this._hamburger.classList.remove(this._CssClasses.HAMBURGER_ACTIVE);
@@ -106,7 +106,7 @@
 	 *
 	 * @private
 	 */
-	BasalNav.prototype._show = function(event) {
+	BassNav.prototype._show = function(event) {
 		event.stopPropagation();
 
 		if (this._nav && this._hamburger) {
@@ -128,7 +128,7 @@
 	 *
 	 * @private
 	 */
-	BasalNav.prototype._addTransitionEndListener = function() {
+	BassNav.prototype._addTransitionEndListener = function() {
 		var hideNav = function() {
 			this._nav.style.display = 'none';
 			this._nav.removeEventListener('transitionend', hideNav);
@@ -144,7 +144,7 @@
 	 *
 	 * @private
 	 */
-	BasalNav.prototype._setAriaAttributes = function() {
+	BassNav.prototype._setAriaAttributes = function() {
 		if (this._hamburger && this._nav) {
 			if (this._nav.classList.contains(this._CssClasses.NAV_ACTIVE)) {
 				this._hamburger.setAttribute('aria-expanded', 'true');
@@ -162,7 +162,7 @@
 	 *
 	 * @private
 	 */
-	BasalNav.prototype._handleResize = debounce(function() {
+	BassNav.prototype._handleResize = debounce(function() {
 		if (window.innerWidth >= desktop && !this._element.classList.contains(this._CssClasses.CONTAINER_COLLAPSED)) {
 			this._nav.classList.remove(this._CssClasses.NAV_ACTIVE);
 			this._hamburger.classList.remove(this._CssClasses.HAMBURGER_ACTIVE);
@@ -193,9 +193,9 @@
 	 * @public
 	 */
 	var init = function() {
-		var el = document.querySelectorAll('.basal-nav');
+		var el = document.querySelectorAll('.bass-nav');
 		for (var i = 0; i < el.length; i++) {
-			var bn = new BasalNav(el[i]);
+			var bn = new BassNav(el[i]);
 		}
 	};
 

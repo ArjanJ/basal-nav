@@ -1,23 +1,23 @@
-# basalNav.js
+# bass-nav.js
 Front-end UI navigation component.
 
 ## Demo
-<a href="http://arjanj.github.io/basal-nav/demo/">View demo</a>
+<a href="http://arjanj.github.io/bass-nav/demo/">View demo</a>
 
 ## HTML Structure
 ```
-<div class="basal-nav">
+<div class="bass-nav">
 
 	<!-- HAMBURGER -->
-	<div class="basal-nav__hamburger">
-		<div class="basal-nav__hamburger-lines"></div>
+	<div class="bass-nav__hamburger">
+		<div class="bass-nav__hamburger-lines"></div>
 	</div>
         
 	<!-- NAVIGATION -->
-	<nav class="basal-nav__nav">
-		<ul class="basal-nav__list">
-			<li class="basal-nav__item">
-				<a href="" class="basal-nav__link">About</a>
+	<nav class="bass-nav__nav">
+		<ul class="bass-nav__list">
+			<li class="bass-nav__item">
+				<a href="" class="bass-nav__link">About</a>
 			</li>
 			...
 		</ul>

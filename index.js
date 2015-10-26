@@ -1,2 +1,2 @@
-require ('./src/js/basalNav');
-module.exports = 'BasalNav';
+require ('./dist/js/bassNav.min');
+module.exports = 'BassNav';

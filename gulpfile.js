@@ -11,7 +11,7 @@ var paths = {
 	src: {
 		js: {
 			all: './src/js/*.js',
-			basalNav: './src/js/basalNav.js'
+			basalNav: './src/js/bassNav.js'
 		},
 		scss: {
 			all: './src/scss/**/*.scss'
@@ -32,10 +32,10 @@ gulp.task('scss', function() {
       this.emit('end');
     })
 		.pipe(postcss([
-		  autoprefixer()
+			autoprefixer()
 		]))
 		.pipe(minifyCSS())
-		.pipe(rename('basalNav.min.css'))
+		.pipe(rename('bassNav.min.css'))
 		.pipe(gulp.dest(paths.dist.css));
 });
 
@@ -45,8 +45,9 @@ gulp.task('js', function() {
       console.log(err);
       this.emit('end');
     })
-		// .pipe(uglify())
-		.pipe(rename('basalNav.min.js'))
+    .pipe(gulp.dest(paths.dist.js))
+		.pipe(uglify())
+		.pipe(rename('bassNav.min.js'))
 		.pipe(gulp.dest(paths.dist.js));
 });
 

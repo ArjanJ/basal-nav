@@ -2,7 +2,7 @@
     #BASAL-NAV NAV
 \*------------------------------------*/
 
-$className: '.basal-nav';
+$className: '.bass-nav';
 
 @mixin collapsed() {
 
@@ -76,7 +76,7 @@ $className: '.basal-nav';
 	}
 }
 
-.basal-nav {
+.bass-nav {
 	@include collapsed;
 
 	@include bp-medium {
